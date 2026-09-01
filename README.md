@@ -1,59 +1,94 @@
-# PortfolioBi
+# portfolio-bi
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.6.
+Portfolio / CV site for **Shiann Lew Byström**, Business Intelligence Analyst student at Nackademin,
+seeking a LIA placement December 2026 – April 2027.
 
-## Development server
+The page is laid out as a BI report: a report navigation pane, a topbar with a theme picker, KPI tiles
+and card grid. Three of the cards are live, interactive charts built from the sample data in
+`src/app/data/chart-data.ts`.
 
-To start a local development server, run:
+## Stack
 
-```bash
-ng serve
-```
+| | |
+|---|---|
+| Angular | 22.1 (standalone, zoneless, OnPush) |
+| Tailwind CSS | 4.3 via PostCSS |
+| i18n | ngx-translate 18 (Swedish + English, runtime toggle) |
+| Charts | hand-written SVG — no charting library |
+| Hosting | Cloudflare Workers static assets |
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+**Node 22.22.3+ or 24.15+ is required** by the Angular 22 CLI.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+## Run it
 
 ```bash
-ng build
+npm install
+npm start          # http://localhost:4200
+npm run build      # -> dist/portfolio-bi/browser
+npm test           # Vitest
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## How it is put together
 
-## Running unit tests
+### Themes
+Three themes — Varm (default), Kall, Midnatt — each one block of CSS custom properties in
+`src/styles.css`, selected by `data-pal` on `<html>`. `ThemeService` writes the attribute and persists
+the choice; a tiny inline script in `index.html` applies the stored value before first paint so the page
+never flashes the wrong theme.
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Tailwind reads the same tokens through `@theme inline`, so `bg-card` compiles to
+`background-color: var(--card)` and follows the active theme. **Adding a fourth theme is one block of
+variables — no component changes.**
+
+### Charts
+`ChartFrameDirective` measures its host with a `ResizeObserver` and exposes geometry as a signal. Charts
+draw at the container's real pixel width, so one SVG user unit equals one CSS pixel and axis labels stay
+legible on a phone instead of being scaled down with the viewBox. Below 430px the charts drop to
+every-other axis label.
+
+Each chart carries `role="img"` with a summarising label, real toggle buttons with `aria-pressed` for the
+filters, an `aria-live` KPI row, and a visually hidden `<table>` with the same numbers.
+
+### Content
+- Facts (KPI values, project list, timeline, courses) — `src/app/data/site.ts`
+- Chart data — `src/app/data/chart-data.ts`
+- All prose — `public/i18n/sv.json` and `public/i18n/en.json`
+
+## Placeholder content to replace
+
+- **Project write-ups** are plausible stand-ins from the course curriculum. Real ones go in the i18n
+  files under `project.*`.
+- **Project screenshots**: set `image` on an entry in `PROJECTS` to a path under `public/img/` and the
+  empty slot is replaced. The slot is sized like the real image so nothing shifts.
+- **Chart data is simulated** and the UI says so. Replace the arrays in `chart-data.ts`; no chart code
+  changes.
+- **KPI values** "65 % klar" and "10 tidigare yrkesår" are illustrative.
+- **`EXAMPLE.se` in `src/index.html`** — the Open Graph tags need absolute URLs, so replace it with the
+  real domain or social previews will not render.
+
+## Deploy
+
+Static output, no server code.
 
 ```bash
-ng test
+npm run build
+npx wrangler deploy          # first run opens a browser to authorise
 ```
 
-## Running end-to-end tests
+`wrangler.jsonc` sets `not_found_handling: "single-page-application"`, which matters: without it, an
+employer who refreshes on `/projekt` gets a 404.
 
-For end-to-end (e2e) testing, run:
+For push-to-deploy, connect the repo in the Cloudflare dashboard (Workers → Builds):
+build command `npm run build`, output directory `dist/portfolio-bi/browser`.
 
-```bash
-ng e2e
-```
+### Domain
+Buy the `.se` from a Swedish registrar **separately from the host**, so the URL in already-sent emails
+survives a hosting change. Registry fee is 92 kr/yr and identical for every registrar; expect
+110–250 kr/yr all-in. Watch teaser pricing — 6 kr the first year renewing at 361 kr is worse over three
+years than a flat 149 kr.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Deliberately not here
 
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+No analytics (nothing to measure at this traffic, and it brings a cookie-banner obligation), no contact
+form (a `mailto:` needs no backend), no CMS, no SSR. Fonts are self-hosted rather than pulled from Google
+Fonts, so no visitor IP is sent to a third party.

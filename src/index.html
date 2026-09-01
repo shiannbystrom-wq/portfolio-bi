@@ -1,11 +1,59 @@
 <!doctype html>
-<html lang="en">
+<html lang="sv" data-pal="warm">
 <head>
   <meta charset="utf-8">
-  <title>PortfolioBi</title>
+  <title>Shiann Lew Byström — Business Intelligence-analytiker</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <meta name="description" content="Andra året på YH-utbildningen till Business Intelligence-analytiker på Nackademin. Söker LIA-plats december 2026 – april 2027 i Stockholm.">
+
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#241d18">
+
+  <!-- Absolute URLs required: scrapers ignore relative og:image paths.
+       Replace EXAMPLE.se once the domain is registered. -->
+  <meta property="og:type" content="profile">
+  <meta property="og:title" content="Shiann Lew Byström — Business Intelligence-analytiker">
+  <meta property="og:description" content="Söker LIA-plats december 2026 – april 2027 i Stockholm.">
+  <meta property="og:image" content="https://EXAMPLE.se/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Shiann Lew Byström, Business Intelligence-analytiker, söker LIA dec 2026 – apr 2027">
+  <meta property="og:url" content="https://EXAMPLE.se/">
+  <meta property="og:locale" content="sv_SE">
+  <meta property="og:locale:alternate" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Shiann Lew Byström — Business Intelligence-analytiker">
+  <meta name="twitter:description" content="Söker LIA-plats december 2026 – april 2027 i Stockholm.">
+  <meta name="twitter:image" content="https://EXAMPLE.se/og-image.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Shiann Lew Byström",
+    "jobTitle": "Business Intelligence-analytiker (student)",
+    "email": "mailto:shiannlew.bystrom@yh.nackademin.se",
+    "sameAs": ["https://www.linkedin.com/in/shiann-lew-bystrom"],
+    "address": { "@type": "PostalAddress", "addressLocality": "Solna", "addressRegion": "Stockholm", "addressCountry": "SE" },
+    "alumniOf": { "@type": "EducationalOrganization", "name": "Nackademin" }
+  }
+  </script>
+
+  <!-- Set the stored theme before first paint, so the page never flashes the default. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('bi-theme');
+        if (t === 'warm' || t === 'cool' || t === 'night') {
+          document.documentElement.setAttribute('data-pal', t);
+        }
+      } catch (e) { /* storage blocked — keep the default */ }
+    })();
+  </script>
 </head>
 <body>
   <app-root></app-root>

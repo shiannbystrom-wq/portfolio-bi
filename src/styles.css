@@ -1,1 +1,211 @@
-/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+
+/* Self-hosted so no visitor IP is sent to Google Fonts (EU audience). */
+@import "@fontsource/ibm-plex-sans/400.css";
+@import "@fontsource/ibm-plex-sans/500.css";
+@import "@fontsource/ibm-plex-sans/600.css";
+@import "@fontsource/ibm-plex-sans-condensed/600.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+
+/* ============================================================
+   Report themes.
+   Each theme is one block of custom properties on :root.
+   Adding a theme = adding a block; no component changes.
+   ============================================================ */
+:root,
+:root[data-pal="warm"] {
+  --bg:          #f2eee8;
+  --card:        #fffdfa;
+  --line:        #e4dbd0;
+  --ink:         #1e1813;
+  --dim:         #6d6157;
+  --body:        #463c34;
+
+  --rail:        #241d18;
+  --rail-ink:    #fdfaf6;
+  --rail-mut:    #c2b3a5;
+  --rail-dim:    #9b8b7d;
+  --rail-hover:  rgb(255 255 255 / 0.06);
+  --rail-active: rgb(168 69 43 / 0.30);
+  --rail-rule:   rgb(255 255 255 / 0.11);
+  --rail-good:   #a8c48a;
+
+  --accent:      #a8452b;
+  --accent-hi:   #8c3721;
+  --accent-soft: #f6e6df;
+  --accent-text: #8c3721;
+  --on-accent:   #fffdfa;
+
+  --cat2:        #116b60;
+  --cat3:        #7e4b72;
+  --cat4:        #b8801a;
+
+  --good:        #4a7a3a;
+  --good-bg:     #e9f0e2;
+  --warn:        #a9701a;
+  --warn-bg:     #f8ecd8;
+
+  --series-1:    #a8452b;
+  --series-2:    #116b60;
+}
+
+:root[data-pal="cool"] {
+  --bg:          #eef1f5;
+  --card:        #ffffff;
+  --line:        #dde3ea;
+  --ink:         #101725;
+  --dim:         #5a6577;
+  --body:        #39435a;
+
+  --rail:        #0f1622;
+  --rail-ink:    #ffffff;
+  --rail-mut:    #a9b6c7;
+  --rail-dim:    #8494a8;
+  --rail-hover:  rgb(255 255 255 / 0.05);
+  --rail-active: rgb(36 87 197 / 0.16);
+  --rail-rule:   rgb(255 255 255 / 0.09);
+  --rail-good:   #5fd39a;
+
+  --accent:      #2457c5;
+  --accent-hi:   #1c46a4;
+  --accent-soft: #e6ecfa;
+  --accent-text: #2457c5;
+  --on-accent:   #ffffff;
+
+  --cat2:        #0e8f80;
+  --cat3:        #7a4bbd;
+  --cat4:        #c07d17;
+
+  --good:        #1c8155;
+  --good-bg:     #e4f3ec;
+  --warn:        #c07d17;
+  --warn-bg:     #fbf0dd;
+
+  --series-1:    #2457c5;
+  --series-2:    #c07d17;
+}
+
+:root[data-pal="night"] {
+  --bg:          #0d1219;
+  --card:        #141b25;
+  --line:        #212b39;
+  --ink:         #e8eef6;
+  --dim:         #8b9aad;
+  --body:        #b9c6d6;
+
+  --rail:        #070b11;
+  --rail-ink:    #ffffff;
+  --rail-mut:    #93a3b8;
+  --rail-dim:    #6f8098;
+  --rail-hover:  rgb(255 255 255 / 0.06);
+  --rail-active: rgb(56 168 216 / 0.24);
+  --rail-rule:   rgb(255 255 255 / 0.10);
+  --rail-good:   #56d69b;
+
+  --accent:      #38a8d8;
+  --accent-hi:   #2b8cb6;
+  --accent-soft: #0f2b3a;
+  --accent-text: #6fc7ee;
+  --on-accent:   #04121b;
+
+  --cat2:        #4fd1a5;
+  --cat3:        #b58cf0;
+  --cat4:        #f0a94a;
+
+  --good:        #4fd1a5;
+  --good-bg:     #0f2a22;
+  --warn:        #f0a94a;
+  --warn-bg:     #2c2113;
+
+  --series-1:    #38a8d8;
+  --series-2:    #f0a94a;
+}
+
+/* ------------------------------------------------------------
+   Bridge the tokens into Tailwind.
+   `inline` matters: it compiles `bg-card` to `background-color: var(--card)`
+   rather than to a theme variable resolved on :root, so utilities pick up
+   whichever theme is active on the element's own cascade.
+   ------------------------------------------------------------ */
+@theme inline {
+  --color-canvas:      var(--bg);
+  --color-card:        var(--card);
+  --color-line:        var(--line);
+  --color-ink:         var(--ink);
+  --color-dim:         var(--dim);
+  --color-body:        var(--body);
+
+  --color-rail:        var(--rail);
+  --color-rail-ink:    var(--rail-ink);
+  --color-rail-mut:    var(--rail-mut);
+  --color-rail-dim:    var(--rail-dim);
+  --color-rail-rule:   var(--rail-rule);
+  --color-rail-good:   var(--rail-good);
+
+  --color-accent:      var(--accent);
+  --color-accent-hi:   var(--accent-hi);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-text: var(--accent-text);
+  --color-on-accent:   var(--on-accent);
+
+  --color-cat2:        var(--cat2);
+  --color-cat3:        var(--cat3);
+  --color-cat4:        var(--cat4);
+
+  --color-good:        var(--good);
+  --color-good-bg:     var(--good-bg);
+  --color-warn:        var(--warn);
+  --color-warn-bg:     var(--warn-bg);
+
+  --font-sans:  "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-cond:  "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+  --font-mono:  "IBM Plex Mono", ui-monospace, monospace;
+}
+
+/* ---------------- base ---------------- */
+html {
+  color-scheme: light;
+  scroll-behavior: smooth;
+}
+html[data-pal="night"] { color-scheme: dark; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    transition-duration: .001ms !important;
+  }
+}
+
+/* Screen-reader-only, used for the chart data tables */
+.sr-only-table {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Tabular figures wherever digits line up */
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* Wide content scrolls inside its own box, never the page */
+.scroller { overflow-x: auto; }
