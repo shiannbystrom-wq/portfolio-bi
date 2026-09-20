@@ -16,15 +16,30 @@ import { PROJECTS } from '../data/site';
       <p class="text-[13.5px] text-dim max-w-[70ch] m-0">{{ 'projects.intro' | translate }}</p>
 
       @for (p of projects; track p.id) {
-        <article class="bg-card border border-line rounded-[10px] overflow-hidden
-                        grid lg:grid-cols-[300px_1fr]">
+        <article class="bg-card border border-line rounded-[10px] overflow-hidden">
           @if (p.image) {
-            <img [src]="p.image" alt="" loading="lazy"
-                 class="w-full h-full object-cover max-lg:aspect-[16/9] border-b lg:border-b-0 lg:border-r border-line">
+            <!--
+              Full card width rather than a narrow column: a report screenshot
+              in a 300px-wide, full-height box gets centre-cropped to portrait
+              and loses both edges. Opening the file in a new tab is the
+              cheapest "see it properly" — native zoom, no dialog code.
+            -->
+            <a [href]="p.image" target="_blank" rel="noopener"
+               class="block border-b border-line group"
+               [attr.aria-label]="('projects.openImage' | translate) + ': ' + ('project.' + p.id + '.title' | translate)">
+              <!--
+                object-contain, not object-cover: these are screenshots, so the
+                whole frame is the content. Cropping a report to fill a box cuts
+                the KPI row off one edge and the legend off the other.
+              -->
+              <img [src]="p.image" alt="" loading="lazy"
+                   class="w-full aspect-[16/9] object-contain bg-canvas
+                          transition-opacity group-hover:opacity-90">
+            </a>
           } @else {
-            <!-- Empty slot, sized like the real screenshot so nothing shifts later. -->
-            <div class="bg-canvas border-b lg:border-b-0 lg:border-r border-line
-                        p-4 min-h-[150px] lg:min-h-[210px] flex flex-col justify-center gap-2">
+            <!-- Empty slot, same 16:9 box as a real screenshot so nothing shifts later. -->
+            <div class="bg-canvas border-b border-line aspect-[16/9] max-h-[260px]
+                        p-4 flex flex-col justify-center gap-2">
               <div class="flex gap-1.5 items-end h-14" aria-hidden="true">
                 @for (h of skeleton; track $index) {
                   <i class="flex-1 block rounded-[2px] bg-accent opacity-[0.22]" [style.height.%]="h"></i>
@@ -91,6 +106,11 @@ import { PROJECTS } from '../data/site';
 })
 export class ProjectsComponent {
   readonly projects = PROJECTS;
-  readonly parts = ['question', 'did', 'outcome'] as const;
+  /**
+   * "tricky" earns its place: what someone found hard, and how they got past
+   * it, is what an interviewer follows up on. It is also the part a candidate
+   * can talk about for ten minutes without preparing.
+   */
+  readonly parts = ['question', 'did', 'tricky', 'outcome'] as const;
   readonly skeleton = [46, 72, 58, 88, 64, 96];
 }

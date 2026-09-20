@@ -35,10 +35,30 @@ export interface Project {
   image: string | null;
 }
 
+/**
+ * Ordered as an argument rather than by date: the finished report first, then
+ * the model underneath it, then the same job done in code. Project 1's "what
+ * I'd do differently" leads directly into project 2.
+ */
 export const PROJECTS: readonly Project[] = [
-  { id: 'star',  year: '2026', tools: ['SQL Server', 'Power Query', 'DAX', 'Power BI'], image: null },
-  { id: 'api',   year: '2026', tools: ['Python', 'REST API', 'ETL', 'Power BI'],        image: null },
-  { id: 'care',  year: '2025', tools: ['Power BI', 'DAX', 'KPI'],                       image: null },
+  {
+    id: 'powerbi',
+    year: 'sep 2025',
+    tools: ['Power BI', 'DAX', 'Power Query', 'SQL'],
+    image: '/img/project-powerbi.jpg',
+  },
+  {
+    id: 'warehouse',
+    year: 'jan 2026',
+    tools: ['SQL Server', 'T-SQL', 'Stjärnschema', 'draw.io'],
+    image: '/img/project-warehouse.jpg',
+  },
+  {
+    id: 'pandas',
+    year: 'apr 2026',
+    tools: ['Python', 'Pandas', 'VS Code', 'Git'],
+    image: '/img/project-pandas.jpg',
+  },
 ];
 
 export interface SkillGroup {

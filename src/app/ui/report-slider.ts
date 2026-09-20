@@ -10,10 +10,15 @@ interface Slide {
   kindKey: string;
 }
 
+/**
+ * Ordered to echo the project list: sales, then warehouse loads, then a
+ * standalone demo. These are built for this page on simulated data — they are
+ * not screenshots of the course projects, and the subheading says so.
+ */
 const SLIDES: Slide[] = [
-  { titleKey: 'slide.care.title',  hintKey: 'slide.care.hint',  kindKey: 'slide.kind.interactive' },
-  { titleKey: 'slide.pipe.title',  hintKey: 'slide.pipe.hint',  kindKey: 'slide.kind.interactive' },
   { titleKey: 'slide.sales.title', hintKey: 'slide.sales.hint', kindKey: 'slide.kind.interactive' },
+  { titleKey: 'slide.pipe.title',  hintKey: 'slide.pipe.hint',  kindKey: 'slide.kind.interactive' },
+  { titleKey: 'slide.care.title',  hintKey: 'slide.care.hint',  kindKey: 'slide.kind.interactive' },
 ];
 
 /**
@@ -30,9 +35,12 @@ const SLIDES: Slide[] = [
   template: `
     <section class="bg-card border border-line rounded-[10px] px-4 py-4 sm:px-5 sm:py-[18px]">
       <div class="flex items-center gap-2 sm:gap-2.5 mb-3.5">
-        <h2 class="text-[14px] sm:text-[14.5px] font-semibold tracking-[-0.01em] m-0">
-          {{ 'slide.heading' | translate }}
-        </h2>
+        <div class="min-w-0">
+          <h2 class="text-[14px] sm:text-[14.5px] font-semibold tracking-[-0.01em] m-0">
+            {{ 'slide.heading' | translate }}
+          </h2>
+          <p class="text-[12.5px] text-dim m-0">{{ 'slide.subheading' | translate }}</p>
+        </div>
         <span class="flex-1"></span>
         <button type="button" class="nav-btn" (click)="step(-1)" [attr.aria-label]="'slide.prev' | translate">‹</button>
         <span class="font-mono text-xs text-dim tnum min-w-[34px] text-center" aria-hidden="true">
@@ -57,9 +65,9 @@ const SLIDES: Slide[] = [
               <p class="text-[12.5px] text-dim mt-0.5 mb-3.5">{{ slide.hintKey | translate }}</p>
 
               @switch (i) {
-                @case (0) { <app-column-line-chart /> }
+                @case (0) { <app-ranked-bar-chart /> }
                 @case (1) { <app-trend-chart /> }
-                @case (2) { <app-ranked-bar-chart /> }
+                @case (2) { <app-column-line-chart /> }
               }
             </div>
           }
