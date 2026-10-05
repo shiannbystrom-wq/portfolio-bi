@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CardComponent } from '../ui/card';
-import { TIMELINE } from '../data/site';
+import { TIMELINE, priorWorkingYears } from '../data/site';
 
 @Component({
   selector: 'app-experience',
@@ -9,7 +9,7 @@ import { TIMELINE } from '../data/site';
   imports: [TranslatePipe, CardComponent],
   template: `
     <div class="grid gap-3 sm:gap-4">
-      <p class="text-[13.5px] text-dim max-w-[70ch] m-0">{{ 'exp.intro' | translate }}</p>
+      <p class="text-[13.5px] text-dim max-w-[70ch] m-0">{{ 'exp.intro' | translate: { years: years } }}</p>
       <app-card>
         <div class="scroller">
           <table class="w-full border-collapse text-[13.5px]">
@@ -47,4 +47,6 @@ import { TIMELINE } from '../data/site';
 })
 export class ExperienceComponent {
   readonly rows = TIMELINE;
+  /** Summed from the table below it, so the sentence can never contradict it. */
+  readonly years = priorWorkingYears();
 }

@@ -4,7 +4,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { CardComponent } from '../ui/card';
 import { TagListComponent } from '../ui/tag-list';
 import { ReportSliderComponent } from '../ui/report-slider';
-import { KPIS, SKILL_ROWS, PROJECTS } from '../data/site';
+import { kpis as buildKpis, SKILL_ROWS, PROJECTS } from '../data/site';
 
 @Component({
   selector: 'app-overview',
@@ -51,7 +51,7 @@ import { KPIS, SKILL_ROWS, PROJECTS } from '../data/site';
                 <tr>
                   <th class="th">{{ 'skills.col.area' | translate }}</th>
                   <th class="th">{{ 'skills.col.tool' | translate }}</th>
-                  <th class="th w-[30%]">{{ 'skills.col.depth' | translate }}</th>
+                  <th class="th w-[34%]">{{ 'skills.col.usedIn' | translate }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -60,7 +60,9 @@ import { KPIS, SKILL_ROWS, PROJECTS } from '../data/site';
                     <td class="td">{{ row.areaKey | translate }}</td>
                     <td class="td">{{ row.tools }}</td>
                     <td class="td">
-                      <span class="block h-1.5 rounded-[3px] bg-accent" [style.width.%]="row.depth"></span>
+                      <a routerLink="/projekt" class="text-accent-text no-underline hover:underline">
+                        {{ 'project.' + row.projectId + '.title' | translate }}
+                      </a>
                     </td>
                   </tr>
                 }
@@ -112,7 +114,8 @@ import { KPIS, SKILL_ROWS, PROJECTS } from '../data/site';
   `,
 })
 export class OverviewComponent {
-  readonly kpis = KPIS;
+  /** Recomputed per load, so the progress tile is never stale. */
+  readonly kpis = buildKpis();
   readonly skillRows = SKILL_ROWS;
   readonly projects = PROJECTS;
 

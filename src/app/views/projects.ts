@@ -16,29 +16,38 @@ import { PROJECTS } from '../data/site';
       <p class="text-[13.5px] text-dim max-w-[70ch] m-0">{{ 'projects.intro' | translate }}</p>
 
       @for (p of projects; track p.id) {
-        <article class="bg-card border border-line rounded-[10px] overflow-hidden">
+        <!--
+          Image beside the text from lg up, stacked below it on phones. Two
+          earlier attempts were wrong in opposite directions: a narrow
+          full-height column centre-cropped every screenshot to portrait, and
+          full card width made a 562px-tall image dominate the card. A fixed
+          16:9 box aligned to the top keeps the card height driven by the prose.
+        -->
+        <article class="bg-card border border-line rounded-[10px] overflow-hidden
+                        grid lg:grid-cols-[minmax(0,360px)_1fr] lg:items-start">
           @if (p.image) {
             <!--
-              Full card width rather than a narrow column: a report screenshot
-              in a 300px-wide, full-height box gets centre-cropped to portrait
-              and loses both edges. Opening the file in a new tab is the
-              cheapest "see it properly" — native zoom, no dialog code.
+              object-contain, not object-cover: these are screenshots, so the
+              whole frame is the content. Cropping a report to fill a box cuts
+              the KPI row off one edge and the legend off the other.
+              The link is the "see it properly" — native zoom, no dialog code.
             -->
             <a [href]="p.image" target="_blank" rel="noopener"
-               class="block border-b border-line group"
+               class="block border-b lg:border-b-0 lg:border-r border-line group cursor-zoom-in"
                [attr.aria-label]="('projects.openImage' | translate) + ': ' + ('project.' + p.id + '.title' | translate)">
-              <!--
-                object-contain, not object-cover: these are screenshots, so the
-                whole frame is the content. Cropping a report to fill a box cuts
-                the KPI row off one edge and the legend off the other.
-              -->
               <img [src]="p.image" alt="" loading="lazy"
                    class="w-full aspect-[16/9] object-contain bg-canvas
                           transition-opacity group-hover:opacity-90">
+              <span class="block px-3 pb-2 lg:pb-3 font-cond text-[10.5px] font-semibold
+                           tracking-[0.1em] uppercase text-dim bg-canvas
+                           opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100
+                           transition-opacity">
+                {{ 'projects.openImage' | translate }} →
+              </span>
             </a>
           } @else {
             <!-- Empty slot, same 16:9 box as a real screenshot so nothing shifts later. -->
-            <div class="bg-canvas border-b border-line aspect-[16/9] max-h-[260px]
+            <div class="bg-canvas border-b lg:border-b-0 lg:border-r border-line aspect-[16/9]
                         p-4 flex flex-col justify-center gap-2">
               <div class="flex gap-1.5 items-end h-14" aria-hidden="true">
                 @for (h of skeleton; track $index) {

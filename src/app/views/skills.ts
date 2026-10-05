@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CardComponent } from '../ui/card';
 import { TagListComponent } from '../ui/tag-list';
@@ -7,7 +8,7 @@ import { SKILL_GROUPS, SKILL_ROWS } from '../data/site';
 @Component({
   selector: 'app-skills',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslatePipe, CardComponent, TagListComponent],
+  imports: [RouterLink, TranslatePipe, CardComponent, TagListComponent],
   template: `
     <div class="grid gap-3 sm:gap-4">
       <div class="grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -25,7 +26,7 @@ import { SKILL_GROUPS, SKILL_ROWS } from '../data/site';
               <tr>
                 <th class="th">{{ 'skills.col.area' | translate }}</th>
                 <th class="th">{{ 'skills.col.tool' | translate }}</th>
-                <th class="th w-[34%]">{{ 'skills.col.depth' | translate }}</th>
+                <th class="th w-[38%]">{{ 'skills.col.usedIn' | translate }}</th>
               </tr>
             </thead>
             <tbody>
@@ -33,7 +34,11 @@ import { SKILL_GROUPS, SKILL_ROWS } from '../data/site';
                 <tr>
                   <td class="td">{{ row.areaKey | translate }}</td>
                   <td class="td">{{ row.tools }}</td>
-                  <td class="td"><span class="block h-1.5 rounded-[3px] bg-accent" [style.width.%]="row.depth"></span></td>
+                  <td class="td">
+                    <a routerLink="/projekt" class="text-accent-text no-underline hover:underline">
+                      {{ 'project.' + row.projectId + '.title' | translate }}
+                    </a>
+                  </td>
                 </tr>
               }
             </tbody>

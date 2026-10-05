@@ -1,9 +1,9 @@
-import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, computed, inject } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ThemeService, THEMES } from '../core/theme.service';
 import { LangService, LangId } from '../core/lang.service';
 import { ViewTitleService } from '../core/view-title';
-import { CONTACT } from '../data/site';
+import { CONTACT, lastUpdatedLabel } from '../data/site';
 
 /**
  * The report header: current view, language switch, theme picker, contact CTA.
@@ -22,7 +22,9 @@ import { CONTACT } from '../data/site';
         {{ viewTitle.titleKey() | translate }}
       </h1>
 
-      <span class="hidden sm:inline-flex chip">{{ 'site.updated' | translate }}</span>
+      <span class="hidden sm:inline-flex chip">
+        {{ 'site.updated' | translate: { when: updated() } }}
+      </span>
 
       <div class="chip gap-0" role="group" [attr.aria-label]="'lang.label' | translate">
         @for (l of langs; track l; let first = $first) {
@@ -88,4 +90,7 @@ export class TopbarComponent {
   readonly themes = THEMES;
   readonly langs: LangId[] = ['sv', 'en'];
   readonly mailto = `mailto:${CONTACT.email}`;
+
+  /** Month name follows the language switch, so "okt" becomes "Oct". */
+  readonly updated = computed(() => lastUpdatedLabel(this.lang.current()));
 }

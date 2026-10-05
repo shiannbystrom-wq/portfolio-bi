@@ -56,15 +56,28 @@ filters, an `aria-live` KPI row, and a visually hidden `<table>` with the same n
 
 ## Placeholder content to replace
 
-- **Project write-ups** are plausible stand-ins from the course curriculum. Real ones go in the i18n
-  files under `project.*`.
 - **Project screenshots**: set `image` on an entry in `PROJECTS` to a path under `public/img/` and the
-  empty slot is replaced. The slot is sized like the real image so nothing shifts.
+  empty slot is replaced. The slot is sized like the real image so nothing shifts. Shoot them at
+  **2400 px wide, 16:9** — the card draws at ~360 px CSS, so anything under ~1500 px is soft on a
+  phone or a retina laptop.
 - **Chart data is simulated** and the UI says so. Replace the arrays in `chart-data.ts`; no chart code
   changes.
-- **KPI values** "65 % klar" and "10 tidigare yrkesår" are illustrative.
 - **`EXAMPLE.se` in `src/index.html`** — the Open Graph tags need absolute URLs, so replace it with the
   real domain or social previews will not render.
+
+## Numbers that derive themselves
+
+Nothing on this page states a figure that someone has to remember to update:
+
+- **"Klar %"** comes from `programmeProgress()` against `PROGRAMME.start`/`end`.
+- **"Tidigare yrkesår"** is summed from `TIMELINE` by `priorWorkingYears()`, and the sentence above
+  the experience table uses the same function, so the two can never disagree. It adds the spans of
+  the roles; it does not measure start-to-end, and year labels hide months, so treat it as a round
+  number rather than an exact one.
+- **"Uppdaterad …"** formats `LAST_UPDATED` in `site.ts`. That one constant is the only thing to bump
+  when the content changes.
+- **The skills table** points each row at the project the tools were used in, instead of a self-rated
+  bar. `site.spec.ts` fails the build if a row points at a project that no longer exists.
 
 ## Deploy
 

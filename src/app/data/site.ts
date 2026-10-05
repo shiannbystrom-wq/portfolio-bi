@@ -12,6 +12,42 @@ export const CONTACT = {
   locality: 'Solna, Stockholm',
 } as const;
 
+/**
+ * Programme span. Progress is derived from these rather than written down: a
+ * hardcoded percentage on a CV page is wrong within a term and nobody notices.
+ */
+export const PROGRAMME = {
+  start: new Date(2025, 7, 15),   // mid-August 2025
+  end: new Date(2027, 5, 15),     // graduation, June 2027
+} as const;
+
+/** Whole percent of the programme elapsed, clamped to 0–100. */
+export function programmeProgress(now: Date = new Date()): number {
+  const total = PROGRAMME.end.getTime() - PROGRAMME.start.getTime();
+  const done = now.getTime() - PROGRAMME.start.getTime();
+  return Math.round(Math.min(1, Math.max(0, done / total)) * 100);
+}
+
+/**
+ * Last content change. The topbar badge is formatted from this rather than
+ * written into both translation files: a "last updated" chip that is three
+ * months stale reads worse than no chip at all, and one constant is easy to
+ * bump when something on the page actually changes.
+ */
+export const LAST_UPDATED = new Date(2026, 9, 5);
+
+/** "okt 2026" / "Oct 2026", from the active language. */
+export function lastUpdatedLabel(lang: string | null, when: Date = LAST_UPDATED): string {
+  // sv-SE abbreviates with a trailing period ("okt. 2026"); dropped, because
+  // the chip sits next to other label text where the dot reads as a typo.
+  return new Intl.DateTimeFormat(lang === 'en' ? 'en-GB' : 'sv-SE', {
+    month: 'short',
+    year: 'numeric',
+  })
+    .format(when)
+    .replace('.', '');
+}
+
 export interface Kpi {
   labelKey: string;
   value: string;
@@ -20,12 +56,14 @@ export interface Kpi {
   tone: 'accent' | 'cat2' | 'cat3' | 'cat4';
 }
 
-export const KPIS: readonly Kpi[] = [
-  { labelKey: 'kpi.programme.label', value: '400', unit: 'YH-p', subKey: 'kpi.programme.sub', tone: 'accent' },
-  { labelKey: 'kpi.progress.label',  value: '65',  unit: '%',    subKey: 'kpi.progress.sub',  tone: 'cat2' },
-  { labelKey: 'kpi.years.label',     value: '10',                subKey: 'kpi.years.sub',     tone: 'cat3' },
-  { labelKey: 'kpi.lia.label',       value: 'dec 26 – apr 27',   subKey: 'kpi.lia.sub',       tone: 'cat4' },
-];
+export function kpis(now: Date = new Date()): Kpi[] {
+  return [
+    { labelKey: 'kpi.programme.label', value: '400', unit: 'YH-p', subKey: 'kpi.programme.sub', tone: 'accent' },
+    { labelKey: 'kpi.progress.label',  value: String(programmeProgress(now)), unit: '%', subKey: 'kpi.progress.sub', tone: 'cat2' },
+    { labelKey: 'kpi.years.label',     value: String(priorWorkingYears()), subKey: 'kpi.years.sub', tone: 'cat3' },
+    { labelKey: 'kpi.lia.label',       value: 'dec 26 – apr 27', subKey: 'kpi.lia.sub', tone: 'cat4' },
+  ];
+}
 
 export interface Project {
   id: string;
@@ -75,16 +113,23 @@ export const SKILL_GROUPS: readonly SkillGroup[] = [
 export interface SkillRow {
   areaKey: string;
   tools: string;
-  /** Share of the widest bar. Reach, not a self-rating — see the caption. */
-  depth: number;
+  /** Project id this toolset was actually used in — the evidence for the row. */
+  projectId: string;
 }
 
+/**
+ * Three rows, each pointing at a project on this same site. The previous
+ * version carried a "depth" bar, which was a self-rating with invented widths;
+ * "which project did you use it in" is the question a reader is actually
+ * asking, and it can be checked two clicks away.
+ *
+ * Tools from the curriculum that no project used (Excel, statistics) stay in
+ * SKILL_GROUPS above, where "covered in the coursework" is the honest claim.
+ */
 export const SKILL_ROWS: readonly SkillRow[] = [
-  { areaKey: 'skills.row.reporting', tools: 'Power BI, DAX',       depth: 88 },
-  { areaKey: 'skills.row.databases', tools: 'SQL, T-SQL',          depth: 80 },
-  { areaKey: 'skills.row.modelling', tools: 'Stjärnschema, DW',    depth: 72 },
-  { areaKey: 'skills.row.etl',       tools: 'Power Query, Python', depth: 66 },
-  { areaKey: 'skills.row.analysis',  tools: 'Statistik, Excel',    depth: 70 },
+  { areaKey: 'skills.row.reporting', tools: 'Power BI, DAX, Power Query', projectId: 'powerbi' },
+  { areaKey: 'skills.row.modelling', tools: 'SQL, T-SQL, stjärnschema',   projectId: 'warehouse' },
+  { areaKey: 'skills.row.code',      tools: 'Python, Pandas, Git',        projectId: 'pandas' },
 ];
 
 export interface TimelineRow {
@@ -101,6 +146,21 @@ export const TIMELINE: readonly TimelineRow[] = [
   { years: '2014–2016', roleKey: 'exp.nurse',      employer: 'The Medical City Hospital' },
   { years: '2011–2014', roleKey: 'exp.teacher',    employer: 'SDA Language Center' },
 ];
+
+/**
+ * Years worked before the programme, summed from the timeline above so the KPI
+ * tile can never drift from the table it is summarising. Studying does not
+ * count, and the 2016–17 gap is not counted either — this adds the roles, it
+ * does not measure the span.
+ */
+export function priorWorkingYears(rows: readonly TimelineRow[] = TIMELINE): number {
+  return rows
+    .filter((r) => r.roleKey !== 'exp.student')
+    .reduce((sum, r) => {
+      const [from, to] = r.years.split('–').map(Number);
+      return sum + Math.max(0, to - from);
+    }, 0);
+}
 
 export type CourseStatus = 'done' | 'ongoing' | 'planned';
 

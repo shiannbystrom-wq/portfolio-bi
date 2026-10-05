@@ -19,7 +19,7 @@ import { CONTACT } from '../data/site';
            [href]="mailto">{{ 'contact.mail' | translate }}</a>
       </app-card>
 
-      <app-card heading="contact.details" hint="contact.replies">
+      <app-card heading="contact.details" hint="contact.detailsHint">
         <div class="grid">
           <a class="block py-3.5 border-b border-line no-underline text-ink text-[15px] hover:text-accent-text break-words"
              [href]="mailto">
