@@ -78,8 +78,10 @@ export interface Project {
 
 /**
  * Ordered as an argument rather than by date: the finished report first, then
- * the model underneath it, then the same job done in code. Project 1's "what
- * I'd do differently" leads directly into project 2.
+ * the model underneath it, then the same data arriving as a live stream.
+ * Project 1's "what I'd do differently" leads directly into project 2, and
+ * project 3 is where the modelling meets data that does not sit still.
+ * Chronological order happens to match, which is a convenience, not the reason.
  */
 export const PROJECTS: readonly Project[] = [
   {
@@ -103,9 +105,9 @@ export const PROJECTS: readonly Project[] = [
     ],
   },
   {
-    id: 'pandas',
-    year: 'apr 2026',
-    tools: ['Python', 'Pandas', 'VS Code', 'Git'],
+    id: 'databricks',
+    year: 'okt 2026',
+    tools: ['Databricks', 'PySpark', 'Azure Event Hubs', 'Delta Lake'],
     images: [
       '/img/project-db-1.jpg',
       '/img/project-db-2.png',
@@ -144,7 +146,7 @@ export interface SkillRow {
 export const SKILL_ROWS: readonly SkillRow[] = [
   { areaKey: 'skills.row.reporting', tools: 'Power BI, DAX, Power Query', projectId: 'powerbi' },
   { areaKey: 'skills.row.modelling', tools: 'SQL, T-SQL, stjärnschema',   projectId: 'warehouse' },
-  { areaKey: 'skills.row.code',      tools: 'Python, Pandas, Git',        projectId: 'pandas' },
+  { areaKey: 'skills.row.code',      tools: 'Python, PySpark, Databricks', projectId: 'databricks' },
 ];
 
 export interface TimelineRow {
