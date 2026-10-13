@@ -25,26 +25,47 @@ import { PROJECTS } from '../data/site';
         -->
         <article class="bg-card border border-line rounded-[10px] overflow-hidden
                         grid lg:grid-cols-[minmax(0,360px)_1fr] lg:items-start">
-          @if (p.image) {
+          @if (p.images.length) {
             <!--
               object-contain, not object-cover: these are screenshots, so the
               whole frame is the content. Cropping a report to fill a box cuts
               the KPI row off one edge and the legend off the other.
-              The link is the "see it properly" — native zoom, no dialog code.
+              Every link is the "see it properly" — native zoom, no dialog code.
             -->
-            <a [href]="p.image" target="_blank" rel="noopener"
-               class="block border-b lg:border-b-0 lg:border-r border-line group cursor-zoom-in"
-               [attr.aria-label]="('projects.openImage' | translate) + ': ' + ('project.' + p.id + '.title' | translate)">
-              <img [src]="p.image" alt="" loading="lazy"
-                   class="w-full aspect-[16/9] object-contain bg-canvas
-                          transition-opacity group-hover:opacity-90">
-              <span class="block px-3 pb-2 lg:pb-3 font-cond text-[10.5px] font-semibold
-                           tracking-[0.1em] uppercase text-dim bg-canvas
-                           opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100
-                           transition-opacity">
-                {{ 'projects.openImage' | translate }} →
-              </span>
-            </a>
+            <div class="border-b lg:border-b-0 lg:border-r border-line bg-canvas">
+              <a [href]="p.images[0]" target="_blank" rel="noopener"
+                 class="block group cursor-zoom-in"
+                 [attr.aria-label]="('projects.openImage' | translate) + ': ' + ('project.' + p.id + '.title' | translate)">
+                <img [src]="p.images[0]" alt="" loading="lazy"
+                     class="w-full aspect-[16/9] object-contain
+                            transition-opacity group-hover:opacity-90">
+                <span class="block px-3 pb-1.5 font-cond text-[10.5px] font-semibold
+                             tracking-[0.1em] uppercase text-dim
+                             opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100
+                             transition-opacity">
+                  {{ 'projects.openImage' | translate }} →
+                </span>
+              </a>
+
+              <!--
+                The rest as thumbnails. Two per row at the column's width is
+                large enough to tell a dashboard from an ERD, which is all a
+                thumbnail has to do before someone clicks it.
+              -->
+              @if (p.images.length > 1) {
+                <div class="grid grid-cols-2 gap-1.5 px-3 pb-3">
+                  @for (img of p.images.slice(1); track img; let i = $index) {
+                    <a [href]="img" target="_blank" rel="noopener"
+                       class="block border border-line rounded-[4px] overflow-hidden cursor-zoom-in
+                              hover:border-dim transition-colors"
+                       [attr.aria-label]="('projects.openImageN' | translate: { n: i + 2 }) + ': ' + ('project.' + p.id + '.title' | translate)">
+                      <img [src]="img" alt="" loading="lazy"
+                           class="w-full aspect-[16/9] object-contain bg-canvas">
+                    </a>
+                  }
+                </div>
+              }
+            </div>
           } @else {
             <!-- Empty slot, same 16:9 box as a real screenshot so nothing shifts later. -->
             <div class="bg-canvas border-b lg:border-b-0 lg:border-r border-line aspect-[16/9]

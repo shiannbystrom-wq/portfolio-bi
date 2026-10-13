@@ -34,7 +34,7 @@ export function programmeProgress(now: Date = new Date()): number {
  * months stale reads worse than no chip at all, and one constant is easy to
  * bump when something on the page actually changes.
  */
-export const LAST_UPDATED = new Date(2026, 9, 5);
+export const LAST_UPDATED = new Date(2026, 9, 13);
 
 /** "okt 2026" / "Oct 2026", from the active language. */
 export function lastUpdatedLabel(lang: string | null, when: Date = LAST_UPDATED): string {
@@ -69,8 +69,11 @@ export interface Project {
   id: string;
   year: string;
   tools: string[];
-  /** Screenshot in public/img. Null renders the empty image slot. */
-  image: string | null;
+  /**
+   * Screenshots in public/img, strongest first — the first one is shown large
+   * and the rest as thumbnails under it. An empty array renders the empty slot.
+   */
+  images: string[];
 }
 
 /**
@@ -83,19 +86,31 @@ export const PROJECTS: readonly Project[] = [
     id: 'powerbi',
     year: 'sep 2025',
     tools: ['Power BI', 'DAX', 'Power Query', 'SQL'],
-    image: '/img/project-powerbi.jpg',
+    images: [
+      '/img/project-powerbi-1.jpg',
+      '/img/project-powerbi-2.jpg',
+      '/img/project-powerbi-3.jpg',
+    ],
   },
   {
     id: 'warehouse',
     year: 'jan 2026',
     tools: ['SQL Server', 'T-SQL', 'Stjärnschema', 'draw.io'],
-    image: '/img/project-warehouse.jpg',
+    images: [
+      '/img/project-kurs_databasdesign-1.png',
+      '/img/project-kurs_databasdesign-2.png',
+      '/img/project-kurs_databasdesign-3.png',
+    ],
   },
   {
     id: 'pandas',
     year: 'apr 2026',
     tools: ['Python', 'Pandas', 'VS Code', 'Git'],
-    image: '/img/project-pandas.jpg',
+    images: [
+      '/img/project-db-1.jpg',
+      '/img/project-db-2.png',
+      '/img/project-db-3.png',
+    ],
   },
 ];
 

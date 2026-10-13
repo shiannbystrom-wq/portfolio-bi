@@ -35,7 +35,7 @@ export class ViewTitleService {
       const key = this.key();
       this.translate.currentLang();
       const view = this.translate.instant(key);
-      this.title.setTitle(`${view} · ${CONTACT.name} — Business Intelligence-analytiker`);
+      this.title.setTitle(`${view} · ${CONTACT.name}, Business Intelligence-analytiker`);
     });
   }
 }

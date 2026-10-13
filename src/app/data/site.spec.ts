@@ -53,6 +53,15 @@ describe('kpis', () => {
   });
 });
 
+describe('PROJECTS', () => {
+  it('gives every project at least one screenshot and no duplicates', () => {
+    for (const p of PROJECTS) {
+      expect(p.images.length, p.id).toBeGreaterThan(0);
+      expect(new Set(p.images).size, p.id).toBe(p.images.length);
+    }
+  });
+});
+
 describe('SKILL_ROWS', () => {
   it('points every row at a project that exists, so the evidence link never 404s', () => {
     const ids = new Set(PROJECTS.map((p) => p.id));
