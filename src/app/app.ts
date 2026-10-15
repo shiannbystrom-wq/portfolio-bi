@@ -14,7 +14,7 @@ import { CONTACT } from './data/site';
   template: `
     <a href="#main" class="skip">{{ 'a11y.skip' | translate }}</a>
 
-    <div class="grid lg:grid-cols-[212px_1fr] min-h-screen">
+    <div class="grid grid-rows-[auto_1fr] lg:grid-rows-1 lg:grid-cols-[212px_1fr] min-h-dvh">
       <app-rail />
 
       <div class="min-w-0 flex flex-col">
