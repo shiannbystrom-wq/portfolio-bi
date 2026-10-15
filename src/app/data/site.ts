@@ -7,8 +7,8 @@
 export const CONTACT = {
   name: 'Shiann Lew Byström',
   email: 'shiannbystrom@gmail.com',
-  linkedin: 'https://www.linkedin.com/in/shiann-lew-bystrom',
-  linkedinHandle: 'shiann-lew-bystrom',
+  linkedin: 'https://www.linkedin.com/in/shiann-lew-bystr%C3%B6m',
+  linkedinHandle: 'shiann-lew-byström',
   locality: 'Solna, Stockholm',
 } as const;
 
