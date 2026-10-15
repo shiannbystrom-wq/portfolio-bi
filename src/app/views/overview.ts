@@ -35,13 +35,7 @@ import { kpis as buildKpis, SKILL_ROWS, PROJECTS } from '../data/site';
       <div class="grid gap-3 sm:gap-4 lg:grid-cols-[1fr_1.5fr] items-start">
         <app-card heading="about.heading" hint="about.hint">
           <p class="text-sm text-body mb-3">{{ 'about.p1' | translate }}</p>
-          <p class="text-sm text-body mb-3">{{ 'about.p2' | translate }}</p>
-          <p class="text-sm text-body mb-4">{{ 'about.p3' | translate }}</p>
-          <app-tag-list [tags]="[
-            'lang.sv' | translate,
-            'lang.en' | translate,
-            'Solna'
-          ]" [muted]="true" />
+          <p class="text-sm text-body">{{ 'about.p2' | translate }}</p>
         </app-card>
 
         <app-card heading="skills.heading" hint="skills.tableHint">
