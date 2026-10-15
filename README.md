@@ -62,8 +62,9 @@ filters, an `aria-live` KPI row, and a visually hidden `<table>` with the same n
   phone or a retina laptop.
 - **Chart data is simulated** and the UI says so. Replace the arrays in `chart-data.ts`; no chart code
   changes.
-- **`EXAMPLE.se` in `src/index.html`** — the Open Graph tags need absolute URLs, so replace it with the
-  real domain or social previews will not render.
+- **Domain in `src/index.html`** — the Open Graph tags use absolute URLs on `shiannbystrom.se`. If the
+  domain ever changes, update the `og:image`, `og:url` and `twitter:image` tags or social previews will
+  not render.
 
 ## Numbers that derive themselves
 

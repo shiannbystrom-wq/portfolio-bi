@@ -6,7 +6,7 @@
 
 export const CONTACT = {
   name: 'Shiann Lew Byström',
-  email: 'shiannlew.bystrom@yh.nackademin.se',
+  email: 'shiannbystrom@gmail.com',
   linkedin: 'https://www.linkedin.com/in/shiann-lew-bystrom',
   linkedinHandle: 'shiann-lew-bystrom',
   locality: 'Solna, Stockholm',
