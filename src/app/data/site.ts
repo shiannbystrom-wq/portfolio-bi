@@ -34,7 +34,7 @@ export function programmeProgress(now: Date = new Date()): number {
  * months stale reads worse than no chip at all, and one constant is easy to
  * bump when something on the page actually changes.
  */
-export const LAST_UPDATED = new Date(2026, 9, 13);
+export const LAST_UPDATED = new Date(2026, 9, 15);
 
 /** "okt 2026" / "Oct 2026", from the active language. */
 export function lastUpdatedLabel(lang: string | null, when: Date = LAST_UPDATED): string {
